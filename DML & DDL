@@ -1,0 +1,92 @@
+#DDL-creat
+create database store 
+
+create table countries (
+code int primary code ,
+name varchar(20) unique ,
+continent_name varchar(20) not null ,
+foreign key (code) references users (country_code)
+);
+
+create table users(
+id int primary key ,
+full_name varchar (20),
+email varchar(20) unique,
+gender char(1),
+date_of_birth varchar(15),
+created_at datetime default CURRENT_TIMESTAMP ,
+country_code int,
+constraint chk1 check (gender = 'F' or gender = 'M')
+foreign key (country_code) references countries (code) );
+
+
+
+create table orders (
+id int primary key,
+user_id int ,
+status varchar(6),
+created_at datetime , 
+foreign key (user_id) references users (id)
+);
+
+create table products(
+id int primary key,
+name varchar(10) not null,
+price int ,
+status varchar(10),
+created_at datetime default CURRENT_TIMESTAMP);
+
+create table order_products(
+order_id int ,
+product_id int ,
+quantity int,
+foreign key (order_id) references orders (id),
+foreign key (product_id) references products (id));
+
+#Constraints
+
+#user_table
+
+alter table users 
+add constraint chk1 check (gender = 'F' or gender = 'M');
+
+# orders
+
+alter table orders
+add constraint c2 check (status_id = ' start ' or status_id = ' finish ')
+
+#order_products.
+
+ALTER TABLE  order_products 
+alter quantity set default '0';
+
+#products
+
+ALTER TABLE  products
+alter price set default '0';
+
+ALTER TABLE  products
+add constraint check3 check(status='valid' or status='expired')
+
+#DML commands
+
+insert into countries 
+values (1, "KSA","COFFEE");
+
+insert into users 
+values (1," ALI AHMAD" , "ALI@hotmail.com" ,'M',2008-11-11, '18-06-12 10:34:09 AM' ,37627);
+
+insert into orders
+values ( 2,1,'finish', '18-06-12 10:34:09 AM');
+
+insert into products
+values ( 2,1,500, 'valid','19-06-12 10:34:09 AM');
+
+insert into order_products
+values ( 2,1,500);
+
+update countries
+set name="france"
+where code=1;
+
+delete from products where id=2;
